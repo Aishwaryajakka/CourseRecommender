@@ -1,0 +1,3 @@
+# Scripts
+
+We'll use this folder to contain scripts for the machine learning algorithm (and possibly other scripts).
