@@ -1,0 +1,4 @@
+Steps to install the Database :
+1. Have a version of MAMP or XAMPP or MAMP installed. 
+2. Open PHP myAdmin and click on SQL Tab.
+3. Execute the file course_rec.sql 
