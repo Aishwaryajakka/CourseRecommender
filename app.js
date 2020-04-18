@@ -1,29 +1,56 @@
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var mysql = require('mysql');
 
 var app = express();
 const port = 4000;
 
 // view engine setup
-app.engine('html',require('ejs').renderFile);
 app.set('views', path.join(__dirname, 'views'));
+app.set("view engine", "ejs");
+
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
-app.set('view engine','html');
 
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+/* SQL Database Connection*/
 
+var connection = mysql.createConnection({
+  host: "localhost",
+  port: "8889",
+  user: "root",
+  password: "root",
+  database : "course_rec",
+  connectionLimit : 10,               // this is the max number of connections before your pool starts waiting for a release
+  multipleStatements : true  
+});
+
+
+connection.connect(function (err) {
+  if (err) throw "Connection to SQL failed";
+  
+  console.log("Connected to SQL");
+  app.locals.connection = connection;
+});
 
 
 // catch 404 and forward to error handler
