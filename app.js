@@ -36,10 +36,10 @@ app.use('/users', usersRouter);
 
 var connection = mysql.createConnection({
   host: "localhost",
-  port: "8889",
-  user: "root",
+  port: "8003", // Port number goes here
+  user: "root", 
   password: "root",
-  database : "course_rec",
+  database : "courseRecommender", //database name goes here
   connectionLimit : 10,               // this is the max number of connections before your pool starts waiting for a release
   multipleStatements : true  
 });
@@ -54,9 +54,9 @@ connection.connect(function (err) {
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// app.use(function(req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function(err, req, res, next) {
