@@ -1,0 +1,13 @@
+<!-- views/recommendation.ejs -->
+
+<% for (idx=0; idx < recommendCourses.length; idx++) { %>
+    <div class="card my-5 mx-auto" style="width: 80%;">
+        <div class="card-body">
+            <p id="courseId" hidden><%= recommendCourses[idx].course_id %></p>
+            <h5 class="card-title"><%= recommendCourses[idx].name %></h5>
+            <p class="card-text"><%= recommendCourses[idx].description %></p>
+            <hr>
+            <p class="card-text"><%= reasons[idx] %></p>
+        </div>
+    </div>
+<% } %>
