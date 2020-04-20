@@ -12,11 +12,18 @@ from surprise.model_selection import GridSearchCV
 from surprise.model_selection import cross_validate
 from collections import defaultdict
 # This is to add in the non-taken classes
-from sklearn.utils.extmath import cartesian
+#from sklearn.utils.extmath import cartesian
+from sqlalchemy import create_engine
+import pymysql
 
 ## Inputs
 this_student = 101179
 this_level = "UG"
+db_host = 'localhost'
+db_user = 'andy'
+db_pw = 'andy'
+db_port = 8880
+db_name = "courseRecommender"
 
 ## Levers
 num_to_return = 20
@@ -24,15 +31,23 @@ exclude_special = False
 exclude_independent = True
 exclude_doctoral = True
 
-# [x] Import taken_course_c table and prepare for model.
+db = pymysql.connect(host=db_host,user=db_user,passwd=db_pw, port=db_port, db=db_name)
+# cursor = db.cursor()
+# query = ("SHOW DATABASES")
+# cursor.execute(query)
+# for r in cursor:
+#     print(r)
 
-#TODO replace csv with database connection for taken_course_c table
 #df = pd.read_csv("/content/drive/My Drive/Course Recommender/data/cleaned_data/taken_course_c.csv")
-df = pd.read_csv("data/cleaned_data/taken_course_c.csv")
+#df = pd.read_csv("data/cleaned_data/taken_course_c.csv")
+df = pd.read_sql('SELECT * FROM taken_course', con=db)
 #grade_key = pd.read_csv("/content/drive/My Drive/Course Recommender/data/cleaned_data/grade_c.csv")
-grade_key = pd.read_csv("data/cleaned_data/grade_c.csv")
+#grade_key = pd.read_csv("data/cleaned_data/grade_c.csv")
+grade_key = pd.read_sql('SELECT * FROM grade', con=db)
 #course_key = pd.read_csv("/content/drive/My Drive/Course Recommender/data/cleaned_data/course_c.csv")
-course_key = pd.read_csv("data/cleaned_data/course_c.csv")
+#course_key = pd.read_csv("data/cleaned_data/course_c.csv")
+course_key = pd.read_sql('SELECT * FROM course', con=db)
+
 course_ix = course_key.drop_duplicates(subset="name").reset_index(drop=True).reset_index(drop=False).rename(columns={"index":"course_index"})[["name","course_index"]]
 course_key = course_key.merge(course_ix, on="name", how="left")
 print(df.shape)
@@ -53,10 +68,10 @@ df = df.sort_values("grade_code").drop_duplicates(subset=("student_id","course_i
 df.reset_index(drop=True, inplace=True)
 
 # Table of not taken combinations
-unique_students = np.unique(df.student_id)
-unique_course_index = np.unique(df.course_index)
-df_not_taken = pd.DataFrame(cartesian((unique_students, unique_course_index)), columns=("student_id","course_index"))
-df_not_taken["rating"] = 0 
+# unique_students = np.unique(df.student_id)
+# unique_course_index = np.unique(df.course_index)
+# df_not_taken = pd.DataFrame(cartesian((unique_students, unique_course_index)), columns=("student_id","course_index"))
+# df_not_taken["rating"] = 0 
 
 # Check for missing data. 
 # Column; number of missing values
