@@ -182,7 +182,7 @@ recommended_course = recommended_course.merge(num_students_average_grade, how='l
 recommended_course = recommended_course.drop_duplicates("name")
 recommended_course = recommended_course[~recommended_course.num_students.isnull()]
 recommended_course = recommended_course.head(num_to_return)
-
+recommended_course = recommended_course.sort_values('average_grade', ascending=False)
 #recommended_json = recommended_course.set_index('course_id').to_json(orient='index')
 recommended_json = recommended_course.set_index('course_id').to_json(r'data/recommendation.json', orient='index')
 # with open('data/recommend.json', 'w', encoding='utf-8') as f:
