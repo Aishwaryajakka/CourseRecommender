@@ -1,9 +1,12 @@
+/**
+ * Created on March 20, 2020
+ * @author Kenny Wu, Aishwarya 
+ */
 var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-/* GET home page. */
 router.get("/", function (req, res) {
     if (req.session.loggedIn == true) {
         res.redirect("home");

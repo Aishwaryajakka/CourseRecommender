@@ -1,3 +1,7 @@
+/**
+ * Created on March 20, 2020
+ * @author Aishwarya, Kenny Wu
+ */
 var createError = require("http-errors");
 var express = require("express");
 var session = require("express-session");
