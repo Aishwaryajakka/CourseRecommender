@@ -14,6 +14,12 @@ from collections import defaultdict
 # This is to add in the non-taken classes
 from sklearn.utils.extmath import cartesian
 
+## Inputs
+this_student = 101179
+this_level = "UG"
+
+## Levers
+num_to_return = 20
 exclude_special = False
 exclude_independent = True
 exclude_doctoral = True
@@ -77,26 +83,6 @@ data_grades = Dataset.load_from_df(df_grades[['student_id', 'course_index', 'rat
 
 ## Choosing Data & Adding Arbitrary Student 
 data = data_taken
-this_student = 101179
-this_level = "GR"
-
-
-#cross_validate(BaselineOnly(), data_grades, verbose=True)
-#cross_validate(NormalPredictor(), data_grades, cv=2)
-
-# Determining the strongest approach
-param_grid = {'n_epochs': [5, 10], 'lr_all': [0.002, 0.005],
-              'reg_all': [0.4, 0.6]}
-gs = GridSearchCV(SVD, param_grid, measures=['rmse', 'mae'], cv=3)
-gs.fit(data)
-
-def test_error(error_measure):
-    print(error_measure)
-    print(gs.best_score[error_measure])
-    print(gs.best_params[error_measure])
-
-test_error("rmse")
-test_error("mae")
 
 # Function to get Top-n recommendations
 def get_top_n(predictions, n=10):
@@ -125,9 +111,28 @@ def get_top_n(predictions, n=10):
 
     return top_n
 
-# First train an SVD algorithm on the movielens dataset.
+# Normal SVD way to training a data set
+#trainset = data.build_full_trainset()
+#algo = SVD()
+#algo.fit(trainset)
+
+# Procedural approach to optimizing the hyperparameters for SVD
+param_grid = {'n_epochs': [5, 10], 'lr_all': [0.002, 0.005],
+              'reg_all': [0.4, 0.6]}
+gs = GridSearchCV(SVD, param_grid, measures=['rmse', 'mae'], cv=3)
+gs.fit(data)
+
+def test_error(error_measure):
+    print(error_measure)
+    print(gs.best_score[error_measure])
+    print(gs.best_params[error_measure])
+
+test_error("rmse")
+#test_error("mae")
+
+# Next we use the best_estimator to fit the data:
 trainset = data.build_full_trainset()
-algo = SVD()
+algo = gs.best_estimator['rmse']
 algo.fit(trainset)
 
 # Than predict ratings for all pairs (u, i) that are NOT in the training set.
@@ -154,7 +159,7 @@ if exclude_independent:
 if exclude_doctoral:
     recommended_course = remove_course_starting_with(recommended_course, "DOCTORAL SEMINAR")
 
-recommended_course = recommended_course.drop_duplicates("name").head(20)
+recommended_course = recommended_course.drop_duplicates("name").head(num_to_return)
 print(recommended_course.shape)
 
 print("finished")
