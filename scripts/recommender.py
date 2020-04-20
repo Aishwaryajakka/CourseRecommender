@@ -1,6 +1,7 @@
 # load_data.py
 # run in the debug console pd.set_option('display.max_columns', None)
 #!pip install scikit-surprise
+import json
 import pandas as pd
 import numpy as np
 from surprise import Dataset
@@ -182,6 +183,11 @@ recommended_course = recommended_course.drop_duplicates("name")
 recommended_course = recommended_course[~recommended_course.num_students.isnull()]
 recommended_course = recommended_course.head(num_to_return)
 
+#recommended_json = recommended_course.set_index('course_id').to_json(orient='index')
+recommended_json = recommended_course.set_index('course_id').to_json(r'data/recommendation.json', orient='index')
+# with open('data/recommend.json', 'w', encoding='utf-8') as f:
+#     #json.dump(recommended_json, f, ensure_ascii=False, indent=4)
+#     json.dump(recommended_json)
 print(recommended_course.shape)
 
 print("finished")
