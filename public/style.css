@@ -1,0 +1,57 @@
+/* Default Settings */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(101, 114, 122);
+    margin: 0;
+    font-size: 1rem;
+    overflow: auto;
+}
+/* Bootstrap Customization */
+.vertical-center {
+    min-height: 100%;
+    min-height: 100vh;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.container {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    background-color: rgba(0, 123, 255, .15);
+    border: 1px solid rgba(0, 123, 255, .2);
+}
+.range-container{
+	width: 500px;
+	position: relative;
+}
+.range-value{
+	position: absolute;
+	top: -90%;
+}
+.range-value span{
+    display: block;
+	position: absolute;
+	width: 30px;
+	height: 24px;
+	line-height: 24px;
+	text-align: center;
+	background: rgb(0, 123, 255);
+	color: rgb(255, 255, 255);
+	font-size: 12px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	border-radius: 6px;
+}
+.range-value span:before{
+    position: absolute;
+    content: "";
+	width: 0;
+    height: 0;
+    top: 100%;
+	left: 50%;
+	border-top: 10px solid rgb(0, 123, 255);
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	margin-left: -5px;
+	margin-top: -1px;
+}
