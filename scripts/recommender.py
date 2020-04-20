@@ -78,6 +78,9 @@ df.reset_index(drop=True, inplace=True)
 print("## Check for missing data.")
 print(df.isnull().sum())
 
+# Feedback metrics
+num_students_average_grade = df.groupby('course_id').agg({'quality_points': 'mean', 'course_id': 'count'}).rename(columns={"course_id":"num_students", "quality_points":"average_grade"}).reset_index()
+
 # Option 1: Use Grades as Rating
 df_grades = pd.DataFrame.copy(df)
 df_grades["rating"] = df_grades["quality_points"]
@@ -174,7 +177,11 @@ if exclude_independent:
 if exclude_doctoral:
     recommended_course = remove_course_starting_with(recommended_course, "DOCTORAL SEMINAR")
 
-recommended_course = recommended_course.drop_duplicates("name").head(num_to_return)
+recommended_course = recommended_course.merge(num_students_average_grade, how='left', on='course_id')
+recommended_course = recommended_course.drop_duplicates("name")
+recommended_course = recommended_course[~recommended_course.num_students.isnull()]
+recommended_course = recommended_course.head(num_to_return)
+
 print(recommended_course.shape)
 
 print("finished")
