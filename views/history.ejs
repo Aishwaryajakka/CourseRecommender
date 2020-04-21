@@ -1,16 +1,21 @@
 <!-- views/history.ejs -->
 
-
-<% for (idx=0; idx < takenCourses.length; idx++) { %>
-    <div class="card my-5 mx-auto" style="width: 80%;">
-        <div class="card-body">
-            <p id="courseId" hidden><%= takenCourses[idx].course_id %></p>
-            <h5 class="card-title"><%= takenCourses[idx].name %></h5>
-            <p class="card-text"><%= takenCourses[idx].description %></p>
+<% if (typeof takenCourses != "undefined") { %>
+    <% for (idx=0; idx < takenCourses.length; idx++) { %>
+        <div class="card my-5 mx-auto" style="width: 80%;">
+            <div class="card-body">
+                <p id="courseId" hidden><%= takenCourses[idx].course_id %></p>
+                <h5 class="card-title"><%= takenCourses[idx].name %></h5>
+                <p class="card-text"><%= takenCourses[idx].description %></p>
+            </div>
         </div>
+    <% } %>
+    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#newCourse" data-whatever="">Add New</button>
+<% } else { %>
+    <div class="my-5 text-center">
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#newCourse" data-whatever="">Add New</button>
     </div>
 <% } %>
-<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#newCourse" data-whatever="">Add New</button>
 <div class="modal fade" id="newCourse" tabindex="-1" role="dialog" aria-labelledby="newCourseModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

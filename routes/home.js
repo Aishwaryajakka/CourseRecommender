@@ -53,16 +53,13 @@ router.get("/profile", function (req, res) {
 router.get("/history", function (req, res) {
     if (req.session.loggedIn == true) {
         const connection = req.app.locals.connection;
-        connection.query("SELECT * FROM `taken_course` WHERE `student_id` = ?;", [req.session.studentId], function (error, courses) {
-            var courseIds = courses.map(function (course) { return course.course_id; });
-            var queryData = [courseIds];
-            connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, takenCourseInfo) {
-                connection.query("SELECT * FROM `level`;", queryData, function (error, allLevelInfo) {
-                    connection.query("SELECT * FROM `term`;", queryData, function (error, allTermInfo) {
-                        connection.query("SELECT * FROM `course`;", queryData, function (error, allCourseInfo) {
-                            connection.query("SELECT * FROM `grade`;", queryData, function (error, allGradeInfo) {
+        connection.query("SELECT * FROM `level`;", function (error, allLevelInfo) {
+            connection.query("SELECT * FROM `term`;", function (error, allTermInfo) {
+                connection.query("SELECT * FROM `course`;", function (error, allCourseInfo) {
+                    connection.query("SELECT * FROM `grade`;", function (error, allGradeInfo) {
+                        connection.query("SELECT * FROM `taken_course` WHERE `student_id` = ?;", [req.session.studentId], function (error, courses) {
+                            if (courses === undefined || courses.length == 0) {
                                 res.render("history", {
-                                    takenCourses: takenCourseInfo,
                                     allLevels: allLevelInfo,
                                     allTerms: allTermInfo,
                                     allCourses: allCourseInfo,
@@ -70,7 +67,22 @@ router.get("/history", function (req, res) {
                                 }, function (err, html) {
                                     res.send(html);
                                 });
-                            });
+                            } else {
+                                console.log("got stuff");
+                                var courseIds = courses.map(function (course) { return course.course_id; });
+                                var queryData = [courseIds];
+                                connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, takenCourseInfo) {
+                                    res.render("history", {
+                                        takenCourses: takenCourseInfo,
+                                        allLevels: allLevelInfo,
+                                        allTerms: allTermInfo,
+                                        allCourses: allCourseInfo,
+                                        allGrades: allGradeInfo
+                                    }, function (err, html) {
+                                        res.send(html);
+                                    });
+                                });
+                            }
                         });
                     });
                 });
