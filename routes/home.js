@@ -121,7 +121,6 @@ router.post("/recommend", function (req, res) {
             python.on("exit", function (code) {
                 console.log(`child process close all stdio with code ${code}`);
                 var dataParsed = JSON.parse(dataString.slice(9));
-                console.log(dataParsed);
                 var courseIds = dataParsed.map(function (course) { return course.course_id; });
                 var queryData = [courseIds];
                 connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, courses) {
