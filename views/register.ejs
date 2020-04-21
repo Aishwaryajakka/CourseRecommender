@@ -111,7 +111,11 @@
                     <div class="form-group row justify-content-center">
                         <label for="userStatus" class="col-sm-2 col-form-label">Status: </label>
                         <div class="col-sm-6">
-                            <input type="checkbox" class="form-check-input" value="1" id="userStatus" name="status">
+                            <select class="form-control" id="userStatus" name="status" disabled>
+                                <option value="1">Current</option>
+                                <option value="0">Past</option>
+                            </select>
+                            <input type="hidden" name="status" value="1"/>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary float-right">Register</button>

@@ -82,11 +82,15 @@
     <div class="form-group row justify-content-center">
         <label for="userStatus" class="col-sm-2 col-form-label">Status: </label>
         <div class="col-sm-6">
-            <% if (status == "Y") { %>
-                <input type="checkbox" class="form-check-input" value="1" id="userStatus" name="status" checked disabled>
-            <% } else { %>
-                <input type="checkbox" class="form-check-input" value="1" id="userStatus" name="status" disabled>
-            <% } %>
+            <select class="form-control" id="userStatus" name="status" disabled>
+                <% if (status == "Y") { %>
+                    <option value="1" selected>Current</option>
+                    <option value="0">Past</option>
+                <% } else { %>
+                    <option value="1">Current</option>
+                    <option value="0"selected>Past</option>
+                <% } %>
+            </select>
         </div>
     </div>
     <!-- <button type="submit" class="btn btn-primary float-right">Edit</button> -->
