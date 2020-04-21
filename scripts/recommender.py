@@ -136,22 +136,23 @@ def get_top_n(predictions, n=10):
 #algo.fit(trainset)
 
 # Procedural approach to optimizing the hyperparameters for SVD
-param_grid = {'n_epochs': [5, 10], 'lr_all': [0.002, 0.005],
-              'reg_all': [0.4, 0.6]}
-gs = GridSearchCV(SVD, param_grid, measures=['rmse', 'mae'], cv=3)
-gs.fit(data)
+# param_grid = {'n_epochs': [5, 10], 'lr_all': [0.002, 0.005],
+#               'reg_all': [0.4, 0.6]}
+# gs = GridSearchCV(SVD, param_grid, measures=['rmse', 'mae'], cv=3)
+# gs.fit(data)
 
-def test_error(error_measure):
-    print(error_measure)
-    print(gs.best_score[error_measure])
-    print(gs.best_params[error_measure])
+# def test_error(error_measure):
+#     print(error_measure)
+#     print(gs.best_score[error_measure])
+#     print(gs.best_params[error_measure])
 
-test_error("rmse")
-#test_error("mae")
+# test_error("rmse")
+# test_error("mae")
 
 # Next we use the best_estimator to fit the data:
 trainset = data.build_full_trainset()
-algo = gs.best_estimator['rmse']
+# algo = gs.best_estimator['rmse']
+algo = SVD(n_epochs=10, lr_all=0.005, reg_all=0.6)
 algo.fit(trainset)
 
 # Than predict ratings for all pairs (u, i) that are NOT in the training set.
