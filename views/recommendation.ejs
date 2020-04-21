@@ -1,13 +1,16 @@
 <!-- views/recommendation.ejs -->
 
-<% for (idx=0; idx < recommendCourses.length; idx++) { %>
-    <div class="card my-5 mx-auto" style="width: 80%;">
-        <div class="card-body">
-            <p id="courseId" hidden><%= recommendCourses[idx].course_id %></p>
-            <h5 class="card-title"><%= recommendCourses[idx].name %></h5>
-            <p class="card-text"><%= recommendCourses[idx].description %></p>
-            <hr>
-            <p class="card-text"><%= reasons[idx] %></p>
-        </div>
-    </div>
+<h5 class="mt-3">Top 20 recommendations</h5>
+<% for (idx=0; idx < recommendCoursesOrder.length; idx++) { %>
+    <% for (innerIdx=0; innerIdx < recommendCourses.length; innerIdx++) { %>
+        <% if (recommendCourses[innerIdx].course_id == recommendCoursesOrder[idx]) { %>
+            <div class="card my-4 mx-auto" style="width: 80%;">
+                <div class="card-body">
+                    <p id="recommendCourseId" hidden><%= recommendCourses[innerIdx].course_id %></p>
+                    <h6 class="card-title"><%= recommendCourses[innerIdx].name %></h6>
+                    <p class="card-text"><%= recommendCourses[innerIdx].description %></p>
+                </div>
+            </div>
+        <% } %>
+    <% } %>
 <% } %>
