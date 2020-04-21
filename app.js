@@ -10,7 +10,6 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var indexRouter = require("./routes/index");
 var homeRouter = require("./routes/home");
-//var usersRouter = require("./routes/users");
 var mysql = require("mysql");
 
 var app = express();
@@ -36,14 +35,13 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 app.use("/", indexRouter);
 app.use("/home", homeRouter);
-//app.use("/users", usersRouter);
 
 
 /* SQL Database Connection*/
 
 var connection = mysql.createConnection({
   host: "localhost",
-  port: "8003",
+  port: "7778",
   user: "root",
   password: "root",
   database : "courseRecommender",
