@@ -5,7 +5,12 @@
         <div class="card my-5 mx-auto" style="width: 80%;">
             <div class="card-body">
                 <p id="takenCourseId" hidden><%= takenCourses[idx].course_id %></p>
-                <h5 class="card-title"><%= takenCourses[idx].name %></h5>
+                <h5 class="card-title" style="display: inline;"><%= takenCourses[idx].name %></h5>
+                <% for (innerIdx=0; innerIdx < takenCoursesWithGrade.length; innerIdx++) { %>
+                    <% if (takenCourses[idx].course_id == takenCoursesWithGrade[innerIdx].course_id) { %>
+                        <h4 class="float-right" style="display: inline;"><%= takenCoursesWithGrade[innerIdx].grade_code %></h4>
+                    <% } %>
+                <% } %>
                 <p class="card-text"><%= takenCourses[idx].description %></p>
             </div>
         </div>

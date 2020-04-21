@@ -75,6 +75,7 @@ router.get("/history", function (req, res) {
                                 var queryData = [courseIds];
                                 connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, takenCourseInfo) {
                                     res.render("history", {
+                                        takenCoursesWithGrade: courses,
                                         takenCourses: takenCourseInfo,
                                         allLevels: allLevelInfo,
                                         allTerms: allTermInfo,
