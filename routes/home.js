@@ -112,7 +112,7 @@ router.post("/recommend", function (req, res) {
         const connection = req.app.locals.connection;
         connection.query("SELECT `level_id` FROM `student` WHERE `student_id` = ?;", req.session.studentId, function (error, level) {
             var dataString;
-            var python = spawn("python3", ["./scripts/recommender.py", req.session.studentId, level[0].level_id]);
+            var python = spawn("python3", ["./scripts/recommender.py", req.session.studentId, level[0].level_id, process.env.HOST, process.env.PORT, process.env.USERNAME, process.env.PASSWORD]);
             python.stdout.on("data", function (data) {
                 console.log("Pipe data from python script ...");
                 dataString += data.toString();
