@@ -4,7 +4,7 @@
     <% for (idx=0; idx < takenCourses.length; idx++) { %>
         <div class="card my-5 mx-auto" style="width: 80%;">
             <div class="card-body">
-                <p id="courseId" hidden><%= takenCourses[idx].course_id %></p>
+                <p id="takenCourseId" hidden><%= takenCourses[idx].course_id %></p>
                 <h5 class="card-title"><%= takenCourses[idx].name %></h5>
                 <p class="card-text"><%= takenCourses[idx].description %></p>
             </div>
