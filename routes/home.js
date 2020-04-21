@@ -11,8 +11,11 @@ var spawn = require("child_process").spawn;
 // 123
 // ID: 101679
 
+// testpython@gmail.com
+// 123
+
 router.get("/", function (req, res) {
-    if (req.session.loggedIn != true ) {
+    if (req.session.loggedIn != true) {
         res.redirect("/");
     } else {
         res.render("home");
@@ -68,7 +71,6 @@ router.get("/history", function (req, res) {
                                     res.send(html);
                                 });
                             } else {
-                                console.log("got stuff");
                                 var courseIds = courses.map(function (course) { return course.course_id; });
                                 var queryData = [courseIds];
                                 connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, takenCourseInfo) {
@@ -105,53 +107,32 @@ router.post("/addCourse", function (req, res) {
     }
 });
 
-router.get("/recommend", function (req, res) {
-//    if (req.session.loggedIn == true) {
+router.post("/recommend", function (req, res) {
+    if (req.session.loggedIn == true) {
         const connection = req.app.locals.connection;
-
-
-        var dataToSend;
-        const python = spawn("python", ["./scripts/hello.py", req.query.studentId]);
-        python.stdout.on("data", function (data) {
-            console.log("Pipe data from python script ...");
-            dataToSend = data.toString();
+        connection.query("SELECT `level_id` FROM `student` WHERE `student_id` = ?;", req.session.studentId, function (error, level) {
+            var dataString;
+            var python = spawn("python3", ["./scripts/recommender.py", req.session.studentId, level[0].level_id]);
+            python.stdout.on("data", function (data) {
+                console.log("Pipe data from python script ...");
+                dataString += data.toString();
+            });
+            python.on("exit", function (code) {
+                console.log(`child process close all stdio with code ${code}`);
+                var dataParsed = JSON.parse(dataString.slice(9));
+                var courseIds = dataParsed.map(function (course) { return course.course_id; });
+                var queryData = [courseIds];
+                connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, courses) {
+                    res.render("recommendation", {
+                        recommendCoursesOrder: courseIds,
+                        recommendCourses: courses,
+                    }, function (err, html) {
+                        res.send(html);
+                    });
+                });
+            });
         });
-        python.on("close", function (code) {
-            console.log(`child process close all stdio with code ${code}`);
-            res.send(dataToSend)
-        });
-
-        // RUN PYTHON SCRIPTS with "req.session.studentId"
-        // GET COURSE IDs FROM SCRIPTS
-
-
-
-
-
-        // var queryData = [courseIds];
-        // connection.query("SELECT * FROM `course` WHERE `course_id` IN (?);", queryData, function (error, courses) {
-        //     res.render("recommendations", {
-        //         recommendCourses: courses
-        //         // reasons: 
-        //     }, function (err, html) {
-        //         res.send(html);
-        //     });
-        // });
-//    }
-});
-
-
-router.get("/test", function (req, res) {
-    var dataToSend;
-    var python = spawn("python", ["./scripts/hello.py", "node.js", "python"]);
-    python.stdout.on("data", function (data) {
-        console.log("Pipe data from python script ...");
-        dataToSend = data.toString();
-    });
-    python.on("close", function (code) {
-        console.log(`child process close all stdio with code ${code}`);
-        res.send(dataToSend)
-    });
+    }
 });
 
 module.exports = router;
