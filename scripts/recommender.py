@@ -1,6 +1,7 @@
 # load_data.py
 # run in the debug console pd.set_option('display.max_columns', None)
 #!pip install scikit-surprise
+import sys
 import json
 import pandas as pd
 import numpy as np
@@ -18,12 +19,14 @@ from sqlalchemy import create_engine
 import pymysql
 
 ## Inputs
-this_student = 101179
-this_level = "UG"
-db_host = 'localhost'
-db_user = 'andy'
-db_pw = 'andy'
-db_port = 8880
+this_student = int(sys.argv[1])
+this_level = sys.argv[2]
+# this_student = 101179
+# this_level = "UG"
+db_host = sys.argv[3]
+db_port = int(sys.argv[4])
+db_user = sys.argv[5]
+db_pw = sys.argv[6]
 db_name = "courseRecommender"
 
 ## Levers
@@ -51,7 +54,7 @@ course_key = pd.read_sql('SELECT * FROM course', con=db)
 
 course_ix = course_key.drop_duplicates(subset="name").reset_index(drop=True).reset_index(drop=False).rename(columns={"index":"course_index"})[["name","course_index"]]
 course_key = course_key.merge(course_ix, on="name", how="left")
-print(df.shape)
+# print(df.shape)
 
 # Remove grades we are not interested in.
 df = df[df["grade_code"].str.startswith(('A','B','C','D','F')) & ~df["grade_code"].str.startswith('DNG')]
@@ -76,8 +79,8 @@ df.reset_index(drop=True, inplace=True)
 
 # Check for missing data. 
 # Column; number of missing values
-print("## Check for missing data.")
-print(df.isnull().sum())
+# print("## Check for missing data.")
+# print(df.isnull().sum())
 
 # Feedback metrics
 num_students_average_grade = df.groupby('course_id').agg({'quality_points': 'mean', 'course_id': 'count'}).rename(columns={"course_id":"num_students", "quality_points":"average_grade"}).reset_index()
@@ -185,10 +188,12 @@ recommended_course = recommended_course[~recommended_course.num_students.isnull(
 recommended_course = recommended_course.head(num_to_return)
 recommended_course = recommended_course.sort_values('average_grade', ascending=False)
 #recommended_json = recommended_course.set_index('course_id').to_json(orient='index')
-recommended_json = recommended_course.set_index('course_id').to_json(r'data/recommendation.json', orient='index')
+# recommended_json = recommended_course.set_index('course_id').to_json(r'data/recommendation.json', orient='index')
+recommended_json = recommended_course.to_json(orient='records')
 # with open('data/recommend.json', 'w', encoding='utf-8') as f:
 #     #json.dump(recommended_json, f, ensure_ascii=False, indent=4)
 #     json.dump(recommended_json)
-print(recommended_course.shape)
+# print(recommended_course.shape)
+print(recommended_json)
 
-print("finished")
+# print("finished")
