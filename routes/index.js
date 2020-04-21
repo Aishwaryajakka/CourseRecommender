@@ -39,17 +39,22 @@ router.post("/auth", function (req, res) {
     const connection = req.app.locals.connection;
     if (email && password) {
         connection.query("SELECT `student_id`, `password` FROM `student` WHERE `email` = ?;", [email], function (error, result) {
-            bcrypt.compare(password, result[0].password, function (err, resultBcrypt) {
-                if (resultBcrypt) {
-                    req.session.loggedIn = true;
-                    req.session.studentId = result[0].student_id;
-                    res.redirect("/");
-                } else {
-                    console.log(err);
-                    res.send("Incorrect Username and/or Password!");
-                    res.end();
-                }
-            });
+            if (result === undefined || result.length == 0) {
+                res.send("Email does not exist!");
+                res.end();
+            } else {
+                bcrypt.compare(password, result[0].password, function (err, resultBcrypt) {
+                    if (resultBcrypt) {
+                        req.session.loggedIn = true;
+                        req.session.studentId = result[0].student_id;
+                        res.redirect("/");
+                    } else {
+                        console.log(err);
+                        res.send("Incorrect Email and/or Password!");
+                        res.end();
+                    }
+                });
+            }
         });
     } else {
         res.send("Please enter Username and Password!");
