@@ -22,7 +22,7 @@
     <div class="form-group row justify-content-center">
         <label for="userGender" class="col-sm-2 col-form-label">Gender: </label>
         <div class="col-sm-6">
-            <select class="form-control" id="userGender" name="gender">
+            <select class="form-control" id="userGender" name="gender" disabled>
                 <% if (gender == "F") { %>
                     <option value="F" selected>Women</option>
                     <option value="M">Men</option>
@@ -36,7 +36,7 @@
     <div class="form-group row justify-content-center">
         <label for="userLevel" class="col-sm-2 col-form-label">Level: </label>
         <div class="col-sm-6">
-            <select class="form-control" id="userLevel" name="level">
+            <select class="form-control" id="userLevel" name="level" disabled>
                 <% for (idx=0; idx < level.length; idx++){ %>
                     <option value="<%= level[idx].level_id %>"><%= level[idx].level_name %></option>
                 <% } %>
@@ -46,7 +46,7 @@
     <div class="form-group row justify-content-center">
         <label for="userStartTerm" class="col-sm-2 col-form-label">Start term: </label>
         <div class="col-sm-6">
-            <select class="form-control" id="userStartTerm" name="term">
+            <select class="form-control" id="userStartTerm" name="term" disabled>
                 <% for (idx=0; idx < term.length; idx++){ %>
                     <option value="<%= term[idx].term_id %>"><%= term[idx].semester + " " + term[idx].year %></option>
                 <% } %>
@@ -56,7 +56,7 @@
     <div class="form-group row justify-content-center">
         <label for="userPlan" class="col-sm-2 col-form-label">Plan of study: </label>
         <div class="col-sm-6">
-            <select class="form-control" id="userPlan" name="plan">
+            <select class="form-control" id="userPlan" name="plan" disabled>
                 <% for (idx=0; idx < plan.length; idx++){ %>
                     <option value="<%= plan[idx].plan_id %>"><%= plan[idx].plan_of_study %></option>
                 <% } %>
@@ -66,7 +66,7 @@
     <div class="form-group row justify-content-center">
         <label for="userDegree" class="col-sm-2 col-form-label">Degree: </label>
         <div class="col-sm-6">
-            <select class="form-control" id="userDegree" name="degree">
+            <select class="form-control" id="userDegree" name="degree" disabled>
                 <% for (idx=0; idx < degree.length; idx++){ %>
                     <option value="<%= degree[idx].degree_id %>"><%= degree[idx].degree_name %></option>
                 <% } %>
