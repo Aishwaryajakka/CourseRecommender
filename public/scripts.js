@@ -1,11 +1,11 @@
 var profileTab = document.getElementById("profile-tab");
 var historyTab = document.getElementById("history-tab");
 var recommendationTab = document.getElementById("recommendation-tab");
-var profileBlock = document.getElementById("profile");
-var historyBlock = document.getElementById("history");
+var profileBlock = document.getElementById("profileResult");
+var historyBlock = document.getElementById("historyResult");
 var recommendationBlock = document.getElementById("recommendation");
 var submitRecommendationForm = document.getElementById("submitRecommendation");
-var recommendationResultBlock = document.getElementById("result");
+var recommendationResultBlock = document.getElementById("recommendationResult");
 var loadingButton = document.getElementById("loadingButton");
 
 
