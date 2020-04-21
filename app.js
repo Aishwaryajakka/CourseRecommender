@@ -2,6 +2,7 @@
  * Created on March 20, 2020
  * @author Aishwarya, Kenny Wu
  */
+const dotenv = require('dotenv');
 var createError = require("http-errors");
 var express = require("express");
 var session = require("express-session");
@@ -11,6 +12,7 @@ var bodyParser = require("body-parser");
 var indexRouter = require("./routes/index");
 var homeRouter = require("./routes/home");
 var mysql = require("mysql");
+dotenv.config();
 
 var app = express();
 const port = 4000;
@@ -40,10 +42,10 @@ app.use("/home", homeRouter);
 /* SQL Database Connection*/
 
 var connection = mysql.createConnection({
-  host: "localhost",
-  port: "7778",
-  user: "root",
-  password: "root",
+  host: process.env.HOST,
+  port: process.env.PORT,
+  user: process.env.USERNAME,
+  password: process.env.PASSWORD,
   database : "courseRecommender",
   connectionLimit : 10,               // this is the max number of connections before your pool starts waiting for a release
   multipleStatements : true  
