@@ -46,6 +46,10 @@
                         <form class="my-5" id="submitRecommendation" action="home/recommend" method="POST">
                             <button type="submit" class="btn btn-primary btn-lg">New Recommendation</button>
                         </form>
+                        <button class="btn btn-primary btn-lg my-5" id="loadingButton" type="button" disabled hidden>
+                            <span class="spinner-border" style="width: 1.5rem; height: 1.5rem;" role="status" aria-hidden="true"></span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Loading...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </button>
                         <div id="result" hidden>
 
                         </div>

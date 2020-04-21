@@ -4,8 +4,9 @@ var recommendationTab = document.getElementById("recommendation-tab");
 var profileBlock = document.getElementById("profile");
 var historyBlock = document.getElementById("history");
 var recommendationBlock = document.getElementById("recommendation");
-var recommendationResultBlock = document.getElementById("result");
 var submitRecommendationForm = document.getElementById("submitRecommendation");
+var recommendationResultBlock = document.getElementById("result");
+var loadingButton = document.getElementById("loadingButton");
 
 
 function loadHistoryTab() {
@@ -46,6 +47,7 @@ historyTab.addEventListener("click", function () {
 
 recommendationTab.addEventListener("click", function () {
     submitRecommendationForm.hidden = false;
+    loadingButton.hidden = true;
     recommendationResultBlock.hidden = true;
     recommendationResultBlock.innerHTML = "";
 });
@@ -53,6 +55,8 @@ recommendationTab.addEventListener("click", function () {
 
 submitRecommendationForm.addEventListener("submit", function (event) {
     event.preventDefault();
+    submitRecommendationForm.hidden = true;
+    loadingButton.hidden = false;
     // get original form data entries
     var formData = new FormData(submitRecommendationForm);
     var formDataEntries = Object.fromEntries(formData.entries())
@@ -66,7 +70,7 @@ submitRecommendationForm.addEventListener("submit", function (event) {
     }).then(function (res) {
         return res.text();
     }).then(function (resultHTML) {
-        submitRecommendationForm.hidden = true;
+        loadingButton.hidden = true;
         recommendationResultBlock.hidden = false;
         recommendationResultBlock.innerHTML = resultHTML;
     }).catch(function (err) {
