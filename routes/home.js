@@ -8,11 +8,16 @@ var spawn = require("child_process").spawn;
 
 
 // test@g.c
-// 123
+// password: 123
 // ID: 101679
 
 // testpython@gmail.com
-// 123
+// password: 123
+// ID: 101179
+
+// kenny@pitt.edu 
+// password: 123
+// ID: 
 
 router.get("/", function (req, res) {
     if (req.session.loggedIn != true) {
