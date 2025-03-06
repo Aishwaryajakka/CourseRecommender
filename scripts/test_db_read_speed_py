@@ -1,0 +1,53 @@
+# load_data.py
+# run in the debug console pd.set_option('display.max_columns', None)
+#!pip install scikit-surprise
+import sys
+import json
+import pandas as pd
+import numpy as np
+from surprise import Dataset
+from surprise import Reader
+from surprise import BaselineOnly
+from surprise import NormalPredictor
+from surprise import SVD
+from surprise.model_selection import GridSearchCV
+from surprise.model_selection import cross_validate
+from collections import defaultdict
+# This is to add in the non-taken classes
+#from sklearn.utils.extmath import cartesian
+from sqlalchemy import create_engine
+import pymysql
+
+## Inputs
+this_student = int(sys.argv[1])
+this_level = sys.argv[2]
+# this_student = 101179
+# this_level = "UG"
+db_host = sys.argv[3]
+db_port = int(sys.argv[4])
+db_user = sys.argv[5]
+db_pw = sys.argv[6]
+db_name = "courseRecommender"
+
+## Levers
+num_to_return = 20
+exclude_special = False
+exclude_independent = True
+exclude_doctoral = True
+
+db = pymysql.connect(host=db_host,user=db_user,passwd=db_pw, port=db_port, db=db_name)
+# cursor = db.cursor()
+# query = ("SHOW DATABASES")
+# cursor.execute(query)
+# for r in cursor:
+#     print(r)
+
+#df = pd.read_csv("/content/drive/My Drive/Course Recommender/data/cleaned_data/taken_course_c.csv")
+#df = pd.read_csv("data/cleaned_data/taken_course_c.csv")
+df = pd.read_sql('SELECT * FROM taken_course', con=db)
+#grade_key = pd.read_csv("/content/drive/My Drive/Course Recommender/data/cleaned_data/grade_c.csv")
+#grade_key = pd.read_csv("data/cleaned_data/grade_c.csv")
+grade_key = pd.read_sql('SELECT * FROM grade', con=db)
+#course_key = pd.read_csv("/content/drive/My Drive/Course Recommender/data/cleaned_data/course_c.csv")
+#course_key = pd.read_csv("data/cleaned_data/course_c.csv")
+course_key = pd.read_sql('SELECT * FROM course', con=db)
